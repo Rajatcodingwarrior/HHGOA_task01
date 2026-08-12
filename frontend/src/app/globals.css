@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+:root {
+  --hh-background: #060c0e;
+  --hh-background-card: #0d1417;
+  --hh-foreground: #f7f5f0;
+  --hh-sand: #e8e2d5;
+  --hh-primary: #ff5100; /* Sunset Orange */
+  --hh-accent: #00f0ff;  /* Tropic Aqua */
+  --hh-muted: #64757b;
+}
+
+@theme inline {
+  --color-background: var(--hh-background);
+  --color-background-card: var(--hh-background-card);
+  --color-foreground: var(--hh-foreground);
+  --color-sand: var(--hh-sand);
+  --color-primary: var(--hh-primary);
+  --color-accent: var(--hh-accent);
+  --color-muted: var(--hh-muted);
+}
+
+body {
+  background-color: var(--hh-background);
+  color: var(--hh-foreground);
+  font-family: var(--font-space-grotesk), sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar styled matching HH Goa theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--hh-background);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 226, 213, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hh-primary);
+}
+
+/* Custom glowing and scanlines effects */
+.glow-primary {
+  text-shadow: 0 0 10px rgba(255, 81, 0, 0.4);
+}
+
+.glow-accent {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.border-accent {
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.08);
+}
+
+.border-primary {
+  box-shadow: 0 0 15px rgba(255, 81, 0, 0.08);
+}
+
+/* Glass panel */
+.hh-glass {
+  background: rgba(13, 20, 23, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 226, 213, 0.12);
+}
+
+.hh-glass-active {
+  border: 1px solid rgba(255, 81, 0, 0.4);
+  box-shadow: 0 0 20px rgba(255, 81, 0, 0.1);
+}
+
+/* Micro dots background grid to match terminal vibes */
+.bg-grid {
+  background-size: 24px 24px;
+  background-image: 
+    radial-gradient(circle, rgba(232, 226, 213, 0.04) 1px, transparent 1px);
+}
+
+/* Text selections */
+::selection {
+  background: var(--hh-primary);
+  color: var(--hh-background);
+}

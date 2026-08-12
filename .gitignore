@@ -1,0 +1,36 @@
+# Environments
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
+!.env.example
+
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+.venv/
+env/
+venv/
+ENV/
+
+# Build caches & outputs
+.next/
+out/
+build/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local databases
+*.db
+*.sqlite
+
+# OS Metadata
+.DS_Store
+Thumbs.db
