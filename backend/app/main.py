@@ -54,6 +54,14 @@ def health_check():
         "timestamp": datetime.utcnow().isoformat()
     }
 
+# Endpoint: Root Welcome / Health Check
+@app.get("/")
+def welcome_root():
+    return {
+        "status": "ONLINE",
+        "message": "HH Goa 2026 API is running."
+    }
+
 # Endpoint: File Upload (Accepts image file, uploads to GridFS)
 @app.post("/api/upload")
 async def upload_photo(file: UploadFile = File(...)):
