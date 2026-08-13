@@ -97,32 +97,48 @@ export default function PreviewFrame({ file, format, metadata }: PreviewFramePro
 
           {/* Live credentials text overlays positioned at exact Y coordinates */}
           
-          {/* 1. Name: Y=1050 (70% from top) */}
-          <div className="absolute top-[70%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
-            <span className="text-[#0d1e19] text-[13px] sm:text-[14px] font-bold tracking-wider truncate uppercase">
+          {/* 1. Name: Y=1030 (68.67% from top) */}
+          <div className="absolute top-[68.67%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
+            <span className="text-[#0d1e19] text-[15px] sm:text-[18px] font-extrabold tracking-wider truncate uppercase">
               {nameDisplay}
             </span>
           </div>
 
-          {/* 2. Role: Y=1120 (74.67% from top) */}
-          <div className="absolute top-[74.67%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
-            <span className="text-[#d81b60] font-mono text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wide leading-none">
+          {/* 2. Role: Y=1100 (73.33% from top) */}
+          <div className="absolute top-[73.33%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
+            <span className="text-[#d81b60] font-mono text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide leading-none">
               {roleDisplay}
             </span>
           </div>
 
-          {/* 3. Team Name: Y=1230 (82% from top) */}
-          <div className="absolute top-[82%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
-            <span className="text-[#0d1e19] font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-wider leading-none">
+          {/* 3. Team Name: Y=1195 (79.67% from top) */}
+          <div className="absolute top-[79.67%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
+            <span className="text-[#0d1e19] text-[13px] sm:text-[15px] font-extrabold uppercase tracking-wider leading-none">
               {teamDisplay}
             </span>
           </div>
 
-          {/* 4. Custom Quote: Y=1340 (89.33% from top) */}
-          <div className="absolute top-[89.33%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
-            <span className="text-[#0d1e19] text-[8px] sm:text-[9px] font-mono italic leading-none truncate">
-              {quoteDisplay}
-            </span>
+          {/* 4. Custom Quote / Team Members: Y=1295 (86.33% from top) */}
+          <div className="absolute top-[84.67%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
+            {metadata.teamMembers && metadata.teamMembers.length > 0 ? (
+              <div className="flex flex-col items-center leading-tight gap-[1px]">
+                <span className="text-[#d81b60] font-mono text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest mb-[2px]">
+                  TEAM MEMBERS
+                </span>
+                <span className="text-[#0d1e19] font-mono text-[10px] sm:text-[11px] font-bold uppercase truncate max-w-[190px]">
+                  {nameDisplay}
+                </span>
+                {metadata.teamMembers.map((member, idx) => (
+                  <span key={idx} className="text-[#0d1e19] font-mono text-[10px] sm:text-[11px] font-bold uppercase truncate max-w-[190px]">
+                    {member.toUpperCase()}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <span className="text-[#0d1e19] text-[9px] sm:text-[10px] font-mono font-bold leading-none truncate">
+                {quoteDisplay}
+              </span>
+            )}
           </div>
         </div>
       )}

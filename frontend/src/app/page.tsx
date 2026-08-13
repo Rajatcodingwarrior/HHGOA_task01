@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Lenis from "lenis";
 import Experience from "@/components/Experience";
 import UploadZone from "@/components/UploadZone";
@@ -12,6 +12,18 @@ import EventTimer from "@/components/EventTimer";
 type AppState = "IDLE" | "PHOTO_SELECTED" | "PROCESSING" | "GENERATED" | "ERROR";
 
 export default function Home() {
+  const lenisRef = useRef<any>(null);
+  
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(element, { offset: -30, duration: 1.2 });
+      } else {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   const [appState, setAppState] = useState<AppState>("IDLE");
   const [format, setFormat] = useState<"pfp" | "builder_card">("pfp");
   const [file, setFile] = useState<File | null>(null);
@@ -50,6 +62,7 @@ export default function Home() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+    lenisRef.current = lenis;
 
     function raf(time: number) {
       lenis.raf(time);
@@ -59,6 +72,7 @@ export default function Home() {
 
     return () => {
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
@@ -99,6 +113,13 @@ export default function Home() {
     setFile(selectedFile);
     setErrorMsg("");
     setAppState("PHOTO_SELECTED");
+    
+    // Auto scroll down based on format selected
+    if (format === "builder_card") {
+      setTimeout(() => scrollToSection("step-3"), 500);
+    } else {
+      setTimeout(() => scrollToSection("step-4"), 500);
+    }
   };
 
   const handleReset = () => {
@@ -184,6 +205,7 @@ export default function Home() {
         share_url: `${FRONTEND_BASE}${generateData.share_url}`,
       });
       setAppState("GENERATED");
+      setTimeout(() => scrollToSection("step-4"), 500);
     } catch (err: any) {
       console.error(err);
       setErrorMsg(err.message || "Failed to compile graphic.");
@@ -225,7 +247,7 @@ export default function Home() {
         <div className="lg:col-span-7 flex flex-col">
           
           {/* STEP 1: HERO OVERLAY (0% to 25% scroll) */}
-          <section className="min-h-screen flex flex-col justify-center items-start pt-10">
+          <section id="step-1" className="min-h-screen flex flex-col justify-center items-start pt-10">
             <span className="text-[10px] bg-primary/10 text-primary border border-primary/30 px-2 py-0.5 font-bold font-mono tracking-[0.2em] uppercase mb-3">
               HACKER HOUSE GOA · 2026
             </span>
@@ -256,13 +278,13 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="animate-bounce font-mono text-[9px] text-accent tracking-widest font-bold">
+            <div className="animate-bounce font-mono text-[9px] text-accent tracking-widest font-bold cursor-pointer" onClick={() => scrollToSection("step-2")}>
               SCROLL DOWN TO INITIATE INGESTION ↓
             </div>
           </section>
 
           {/* STEP 2: FILE UPLOAD & SELECT (25% to 50% scroll) */}
-          <section className="min-h-screen flex flex-col justify-center items-start py-10 w-full">
+          <section id="step-2" className="min-h-screen flex flex-col justify-center items-start py-10 w-full">
             <div className="mb-6 w-full">
               <span className="text-[10px] text-primary font-bold font-mono tracking-widest block mb-1">
                 STEP 02 // SELECTION & INGESTION
@@ -275,8 +297,11 @@ export default function Home() {
             {/* Selection */}
             <div className="grid grid-cols-2 gap-4 w-full mb-6 font-mono">
               <button
-                onClick={() => setFormat("pfp")}
-                className={`flex flex-col p-4 border rounded-sm text-left transition-all ${
+                onClick={() => {
+                  setFormat("pfp");
+                  if (file) setTimeout(() => scrollToSection("step-4"), 400);
+                }}
+                className={`flex flex-col p-4 border rounded-sm text-left transition-all cursor-pointer ${
                   format === "pfp" ? "border-primary bg-primary/5 text-white" : "border-sand/15 text-muted"
                 }`}
               >
@@ -287,8 +312,11 @@ export default function Home() {
               </button>
 
               <button
-                onClick={() => setFormat("builder_card")}
-                className={`flex flex-col p-4 border rounded-sm text-left transition-all ${
+                onClick={() => {
+                  setFormat("builder_card");
+                  if (file) setTimeout(() => scrollToSection("step-3"), 400);
+                }}
+                className={`flex flex-col p-4 border rounded-sm text-left transition-all cursor-pointer ${
                   format === "builder_card" ? "border-primary bg-primary/5 text-white" : "border-sand/15 text-muted"
                 }`}
               >
@@ -310,7 +338,7 @@ export default function Home() {
           </section>
 
           {/* STEP 3: DETAILS CONFIG (50% to 75% scroll) */}
-          <section className="min-h-screen flex flex-col justify-center items-start py-10 w-full">
+          <section id="step-3" className="min-h-screen flex flex-col justify-center items-start py-10 w-full">
             <div className="mb-6 w-full">
               <span className="text-[10px] text-primary font-bold font-mono tracking-widest block mb-1">
                 STEP 03 // METADATA ENGRAVING
@@ -325,8 +353,16 @@ export default function Home() {
                 &gt; PFP requires no text details. You are ready to compile. Scroll down to trigger generation.
               </div>
             ) : (
-              <div className="w-full">
+              <div className="w-full flex flex-col gap-4">
                 <FormCard formData={formData} setFormData={setFormData} />
+                {formData.name.trim() !== "" && formData.role.trim() !== "" && (
+                  <button
+                    onClick={() => scrollToSection("step-4")}
+                    className="w-full mt-2 py-3.5 px-6 bg-primary text-white font-mono font-bold tracking-[0.25em] text-[9px] hover:bg-primary/95 disabled:opacity-40 transition-all uppercase rounded-sm cursor-pointer border border-primary/20 hover:shadow-[0_0_15px_rgba(255,81,0,0.2)]"
+                  >
+                    NEXT: COMPILE HH GOA GRAPHIC &rarr;
+                  </button>
+                )}
               </div>
             )}
 
@@ -337,7 +373,7 @@ export default function Home() {
           </section>
 
           {/* STEP 4: COMPILATION & RESULT (75% to 100% scroll) */}
-          <section className="min-h-screen flex flex-col justify-center items-start py-10 w-full">
+          <section id="step-4" className="min-h-screen flex flex-col justify-center items-start py-10 w-full">
             <div className="mb-6 w-full">
               <span className="text-[10px] text-primary font-bold font-mono tracking-widest block mb-1">
                 STEP 04 // FINAL COMPILE

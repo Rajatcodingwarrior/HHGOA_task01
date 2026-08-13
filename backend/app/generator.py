@@ -201,22 +201,39 @@ def generate_builder_card(photo_bytes: bytes, metadata: dict) -> bytes:
 
     # Name and Stack details from metadata (Centered using dark text shifted down by 120px)
     name = metadata.get("name", "ANONYMOUS BUILDER").upper()
-    draw.text((600, 1050), name, font=space_g_bold, fill=(13, 30, 25, 255), anchor="mt")
+    space_g_name = get_cached_font("SpaceGrotesk-Bold.ttf", 64)
+    draw.text((600, 1030), name, font=space_g_name, fill=(13, 30, 25, 255), anchor="mt")
     
     role = metadata.get("role", "BUILDER").upper()
-    draw.text((600, 1120), role, font=jb_mono_tag, fill=(216, 27, 96, 255), anchor="mt")
+    jb_mono_role = get_cached_font("JetBrainsMono-Bold.ttf", 42)
+    draw.text((600, 1100), role, font=jb_mono_role, fill=(216, 27, 96, 255), anchor="mt")
 
     # Dividers and parameters
-    draw.line([(100, 1190), (1100, 1190)], fill=(216, 27, 96, 255), width=3)
+    draw.line([(100, 1165), (1100, 1165)], fill=(216, 27, 96, 255), width=4)
     
     team_name = metadata.get("team_name", "AI & FULL-STACK").upper()
-    draw.text((600, 1230), team_name, font=jb_mono_tag, fill=(13, 30, 25, 255), anchor="mt")
+    space_g_team = get_cached_font("SpaceGrotesk-Bold.ttf", 48)
+    draw.text((600, 1195), team_name, font=space_g_team, fill=(13, 30, 25, 255), anchor="mt")
 
-    draw.line([(100, 1290), (1100, 1290)], fill=(216, 27, 96, 255), width=3)
+    draw.line([(100, 1260), (1100, 1260)], fill=(216, 27, 96, 255), width=4)
 
-    # Custom quote
-    quote_text = '"I BUILD INTERFACES THAT INSPIRE"'
-    draw.text((600, 1340), quote_text, font=jb_mono_text, fill=(13, 30, 25, 255), anchor="mt")
+    # Custom quote / Team members list (Stacked vertically one below another)
+    team_members = metadata.get("team_members", [])
+    if team_members and isinstance(team_members, list) and len(team_members) > 0:
+        jb_mono_hdr = get_cached_font("JetBrainsMono-Bold.ttf", 30)
+        jb_mono_name = get_cached_font("JetBrainsMono-Bold.ttf", 26)
+        
+        # Draw "TEAM MEMBERS" header
+        draw.text((600, 1270), "TEAM MEMBERS", font=jb_mono_hdr, fill=(216, 27, 96, 255), anchor="mt")
+        
+        # Compile all members list
+        all_members = [name] + [m.upper() for m in team_members]
+        for idx, member_name in enumerate(all_members):
+            draw.text((600, 1310 + (idx * 32)), member_name, font=jb_mono_name, fill=(13, 30, 25, 255), anchor="mt")
+    else:
+        quote_text = '"I BUILD INTERFACES THAT INSPIRE"'
+        jb_mono_quote = get_cached_font("JetBrainsMono-Bold.ttf", 30)
+        draw.text((600, 1295), quote_text, font=jb_mono_quote, fill=(13, 30, 25, 255), anchor="mt")
 
     # Footer boarding details
     draw.text((100, 1430), "#FrameInGoa", font=space_g_bold, fill=(216, 27, 96, 255))
