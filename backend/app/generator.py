@@ -1,6 +1,7 @@
 import os
 import urllib.request
 import logging
+import ssl
 from PIL import Image, ImageDraw, ImageFont
 import io
 import random
@@ -26,16 +27,24 @@ def get_cached_font(font_name: str, size: int) -> ImageFont.FreeTypeFont:
     """Downloads the font from Google Fonts raw repository if not cached locally, then loads it."""
     font_path = os.path.join(FONTS_DIR, font_name)
     
-    if not os.path.exists(font_path):
+    if not os.path.exists(font_path) or os.path.getsize(font_path) < 1000:
         try:
             url = FONT_URLS[font_name]
             logger.info(f"Downloading font {font_name} from {url}...")
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req) as response, open(font_path, 'wb') as out_file:
+            # Bypasses local SSL certificate issues on Linux servers
+            context = ssl._create_unverified_context()
+            with urllib.request.urlopen(req, context=context) as response, open(font_path, 'wb') as out_file:
                 out_file.write(response.read())
             logger.info(f"Font {font_name} downloaded successfully.")
         except Exception as e:
             logger.error(f"Failed to download font {font_name}: {e}. Falling back to default system font.")
+            # Remove corrupted file if it exists to allow clean download on next run
+            if os.path.exists(font_path):
+                try:
+                    os.remove(font_path)
+                except:
+                    pass
             return ImageFont.load_default()
 
     try:
@@ -172,7 +181,7 @@ def generate_builder_card(photo_bytes: bytes, metadata: dict) -> bytes:
         logger.warning(f"Template not found at {CARD_TEMPLATE_PATH}. Drawing fallback...")
         canvas = Image.new("RGBA", (1200, 1500), (247, 244, 235, 255))
         draw_fallback = ImageDraw.Draw(canvas)
-        draw_fallback.rectangle([30, 30, 1170, 1470], outline=(235, 190, 20, 255), width=4)
+        draw_fallback.rectangle([30, 30, 1170, 1470], outline=(235, 182, 20, 255), width=4)
 
     draw = ImageDraw.Draw(canvas)
 
@@ -182,7 +191,7 @@ def generate_builder_card(photo_bytes: bytes, metadata: dict) -> bytes:
     # 3. Paste circular cropped photo inside the center
     canvas.paste(photo_circle, (320, 440), photo_circle)
     # Yellow circular outline
-    draw.ellipse([314, 434, 886, 1006], outline=(235, 190, 20, 255), width=10)
+    draw.ellipse([314, 434, 886, 1006], outline=(235, 182, 20, 255), width=10)
 
     # Fonts
     space_g_title = get_cached_font("SpaceGrotesk-Bold.ttf", 64)
