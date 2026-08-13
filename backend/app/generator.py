@@ -18,9 +18,9 @@ PFP_TEMPLATE_PATH = os.path.join(TEMPLATES_DIR, "pfp_frame_template.jpg")
 CARD_TEMPLATE_PATH = os.path.join(TEMPLATES_DIR, "builder_card_template.jpg")
 
 FONT_URLS = {
-    "SpaceGrotesk-Bold.ttf": "https://github.com/google/fonts/raw/main/ofl/spacegrotesk/static/SpaceGrotesk-Bold.ttf",
-    "JetBrainsMono-Regular.ttf": "https://github.com/google/fonts/raw/main/ofl/jetbrainsmono/static/JetBrainsMono-Regular.ttf",
-    "JetBrainsMono-Bold.ttf": "https://github.com/google/fonts/raw/main/ofl/jetbrainsmono/static/JetBrainsMono-Bold.ttf",
+    "SpaceGrotesk-Bold.ttf": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj4PVksj.ttf",
+    "JetBrainsMono-Regular.ttf": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPQ.ttf",
+    "JetBrainsMono-Bold.ttf": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8L6tjPQ.ttf",
 }
 
 def get_cached_font(font_name: str, size: int) -> ImageFont.FreeTypeFont:
@@ -223,7 +223,7 @@ def generate_builder_card(photo_bytes: bytes, metadata: dict) -> bytes:
     
     team_name = metadata.get("team_name", "AI & FULL-STACK").upper()
     space_g_team = get_cached_font("SpaceGrotesk-Bold.ttf", 48)
-    draw.text((600, 1195), team_name, font=space_g_team, fill=(13, 30, 25, 255), anchor="mt")
+    draw.text((600, 1150), team_name, font=space_g_team, fill=(13, 30, 25, 255), anchor="mt")
 
     if not os.path.exists(CARD_TEMPLATE_PATH):
         draw.line([(100, 1260), (1100, 1260)], fill=(216, 27, 96, 255), width=4)
@@ -247,7 +247,7 @@ def generate_builder_card(photo_bytes: bytes, metadata: dict) -> bytes:
         draw.text((600, 1295), quote_text, font=jb_mono_quote, fill=(13, 30, 25, 255), anchor="mt")
 
     # Footer boarding details
-    draw.text((100, 1430), "#FrameInGoa", font=space_g_bold, fill=(216, 27, 96, 255))
+    draw.text((130, 1430), "#FrameInGoa", font=space_g_bold, fill=(216, 27, 96, 255))
     draw.text((950, 1430), "HH GOA 2026", font=jb_mono_tag, fill=(13, 30, 25, 255))
 
     # Output PNG bytes

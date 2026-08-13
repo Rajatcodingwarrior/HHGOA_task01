@@ -18,6 +18,9 @@
   --color-primary: var(--hh-primary);
   --color-accent: var(--hh-accent);
   --color-muted: var(--hh-muted);
+  
+  --font-sans: var(--font-space-grotesk), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 }
 
 body {

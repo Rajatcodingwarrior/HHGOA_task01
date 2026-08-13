@@ -448,8 +448,12 @@ export default function Home() {
             {/* Mobile-only inline preview */}
             <div className="w-full mt-6 lg:hidden">
               {appState === "GENERATED" && resultData ? (
-                <div className="border border-accent/30 rounded-sm overflow-hidden bg-background-card w-full">
-                  <img src={resultData.image_url} alt="Result" className="w-full h-auto" />
+                <div className="flex items-center justify-center w-full">
+                  <img
+                    src={resultData.image_url}
+                    alt="Result"
+                    className="w-full h-auto rounded-sm border border-accent/30 shadow-[0_0_30px_rgba(0,240,255,0.15)]"
+                  />
                 </div>
               ) : (
                 <PreviewFrame file={file} format={format} metadata={formData} />
@@ -466,11 +470,11 @@ export default function Home() {
               <span className="text-[8px] text-accent font-bold tracking-widest font-mono uppercase animate-pulse">
                 ✓ COMPILE SUCCESSFUL [201 CREATED]
               </span>
-              <div className="relative w-full border border-accent/30 rounded-sm shadow-[0_0_40px_rgba(0,240,255,0.1)] overflow-hidden bg-background-card">
+              <div className="relative w-full flex items-center justify-center">
                 <img
                   src={resultData.image_url}
                   alt="Final Badge"
-                  className="w-full h-auto max-h-[70vh] object-contain"
+                  className="w-full max-h-[72vh] object-contain rounded-sm border border-accent/30 shadow-[0_0_40px_rgba(0,240,255,0.15)]"
                 />
               </div>
             </div>

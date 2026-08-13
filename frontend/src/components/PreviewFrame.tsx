@@ -111,8 +111,8 @@ export default function PreviewFrame({ file, format, metadata }: PreviewFramePro
             </span>
           </div>
 
-          {/* 3. Team Name: Y=1195 (79.67% from top) */}
-          <div className="absolute top-[79.67%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
+          {/* 3. Team Name: Y=1150 (76.67% from top) */}
+          <div className="absolute top-[76.67%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
             <span className="text-[#0d1e19] text-[13px] sm:text-[15px] font-extrabold uppercase tracking-wider leading-none">
               {teamDisplay}
             </span>
@@ -122,20 +122,20 @@ export default function PreviewFrame({ file, format, metadata }: PreviewFramePro
           <div className="absolute top-[84.67%] inset-x-0 flex justify-center items-center pointer-events-none px-4">
             {metadata.teamMembers && metadata.teamMembers.length > 0 ? (
               <div className="flex flex-col items-center leading-tight gap-[1px]">
-                <span className="text-[#d81b60] font-mono text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest mb-[2px]">
+                <span className="text-[#d81b60] font-mono text-[8px] sm:text-[9px] font-extrabold uppercase tracking-widest mb-[2px]">
                   TEAM MEMBERS
                 </span>
-                <span className="text-[#0d1e19] font-mono text-[10px] sm:text-[11px] font-bold uppercase truncate max-w-[190px]">
+                <span className="text-[#0d1e19] font-mono text-[8.5px] sm:text-[9.5px] font-bold uppercase truncate max-w-[190px]">
                   {nameDisplay}
                 </span>
                 {metadata.teamMembers.map((member, idx) => (
-                  <span key={idx} className="text-[#0d1e19] font-mono text-[10px] sm:text-[11px] font-bold uppercase truncate max-w-[190px]">
+                  <span key={idx} className="text-[#0d1e19] font-mono text-[8.5px] sm:text-[9.5px] font-bold uppercase truncate max-w-[190px]">
                     {member.toUpperCase()}
                   </span>
                 ))}
               </div>
             ) : (
-              <span className="text-[#0d1e19] text-[9px] sm:text-[10px] font-mono font-bold leading-none truncate">
+              <span className="text-[#0d1e19] text-[8.5px] sm:text-[9.5px] font-mono font-bold leading-none truncate">
                 {quoteDisplay}
               </span>
             )}
