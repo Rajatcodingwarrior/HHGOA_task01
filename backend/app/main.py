@@ -27,11 +27,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS Setup
+# CORS Setup - Open origins for public frontend client access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
