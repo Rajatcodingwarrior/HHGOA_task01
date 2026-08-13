@@ -217,14 +217,16 @@ def generate_builder_card(photo_bytes: bytes, metadata: dict) -> bytes:
     jb_mono_role = get_cached_font("JetBrainsMono-Bold.ttf", 42)
     draw.text((600, 1100), role, font=jb_mono_role, fill=(216, 27, 96, 255), anchor="mt")
 
-    # Dividers and parameters
-    draw.line([(100, 1165), (1100, 1165)], fill=(216, 27, 96, 255), width=4)
+    # Dividers and parameters (Only drawn if using fallback template background)
+    if not os.path.exists(CARD_TEMPLATE_PATH):
+        draw.line([(100, 1165), (1100, 1165)], fill=(216, 27, 96, 255), width=4)
     
     team_name = metadata.get("team_name", "AI & FULL-STACK").upper()
     space_g_team = get_cached_font("SpaceGrotesk-Bold.ttf", 48)
     draw.text((600, 1195), team_name, font=space_g_team, fill=(13, 30, 25, 255), anchor="mt")
 
-    draw.line([(100, 1260), (1100, 1260)], fill=(216, 27, 96, 255), width=4)
+    if not os.path.exists(CARD_TEMPLATE_PATH):
+        draw.line([(100, 1260), (1100, 1260)], fill=(216, 27, 96, 255), width=4)
 
     # Custom quote / Team members list (Stacked vertically one below another)
     team_members = metadata.get("team_members", [])
